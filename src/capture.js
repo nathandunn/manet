@@ -89,18 +89,18 @@ function minimizeImage(src, dest, cb) {
 function runCapturingProcess(options, config, outputFile, base64, onFinish) {
     const scriptFile = utils.filePath(SCRIPT_FILE),
           command = cliCommand(config).split(/[ ]+/),
-          cmd = _.union(command, [scriptFile, base64, 'capture.png'],['&&','convert','temp.png','-trim','+repage',outputFile],['and','rm','-f','delete.png']),
+          cmd = _.union(command, ['--disk-cache=true',scriptFile, base64, 'capture.png'],['&&','convert','temp.png','-trim','+repage',outputFile],['and','rm','-f','delete.png']),
           opts = {
               timeout: config.timeout
           };
     const tempFile = outputFile+'.png';
     // union has to be a unique set for some reason
-    cmd[5] = tempFile;
+    cmd[6] = tempFile;
     // renaming temp.png to capture.png
-    cmd[8] = tempFile;
+    cmd[9] = tempFile;
     // renaming delete.png to capture.png
-    cmd[12] = '&&';
-    cmd[15] = tempFile;
+    cmd[13] = '&&';
+    cmd[16] = tempFile;
 
     logger.debug(
         'Options for script: %s, base64: %s, command: %s',
